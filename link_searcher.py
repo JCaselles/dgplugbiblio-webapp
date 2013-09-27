@@ -6,7 +6,13 @@ from sys import exit, argv
 from re import search
 from json import dump
 
+
 def get_logfiles_path(root_path):
+    """
+    Walks through the root_path tree and stores the path of every file
+    in a list. Returns that list.
+
+    """
 
     logpaths = []
     for root, dirs, files in walk(root_path):
@@ -19,6 +25,15 @@ def get_logfiles_path(root_path):
 
 
 def search_for_links(fileslist):
+    """
+    Reads every file in fileslist, which should be a list with the
+    paths of every file to be sweeped. Performs a regex search
+    for a web url pattern, and filters the most obvious
+    disposable ones. 
+
+    Returns a list containing all the links.
+
+    """
 
     stored_links = []
     for file_path in fileslist:
@@ -28,7 +43,7 @@ def search_for_links(fileslist):
                     link = search("(http|ftp|https)?:\/\/([\w\-_]+(?:(?:\."
                                   "[\w\-_]+)+))([\w\-\.,@?^=%&amp;:/~\+#]*"
                                   "[\w\-\@?^=%&amp;/~\+#])?", line)
-                    if ((link) and 
+                    if (link and
                         ('paste' not in link.group() and
                          'stackoverflow' not in link.group() and
                          'pymbook' not in link.group() and
@@ -49,6 +64,11 @@ def search_for_links(fileslist):
     return stored_links
 
 
+
 if __name__ == "__main__":
-    with open(argv[2], 'w') as json_file:
-        dump(search_for_links(get_logfiles_path(argv[1])), json_file)
+    usage = "\nUsage: $ python link_searcher.py <root_dir> <json_file>\n"
+    if len(argv) == 3:
+        with open(argv[2], 'w') as json_file:
+            dump(search_for_links(get_logfiles_path(argv[1])), json_file)
+    else:
+        print usage
