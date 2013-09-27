@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+  <meta charset="utf-8" />
+  <title>DGPLUG BIBLIOGRAPHY</title>
+  <link type="text/css" rel="stylesheet"
+        href="{{ url_for('static',
+              filename='hello.css')}}" />
+</head>
+<body>
+<h1>BIBLIOGRAPHY EXTRACTED FROM DGPLUG SESSIONS' LOGS</h1>
+    <form style="display:inline" method="get" action={{ url_for('index') }}>
+    <input type="text" name="query"/>
+    <input type="submit" value="Search"/>
+    </form>
+    <form style="display:inline" action={{ url_for('index') }}>
+    <input type="submit" value="Reset"/>
+    </form>
+<ul>
+{% for link in links_list %}
+<li><a href={{link}}>{{link}}</a></li>
+{% endfor %}
+</ul>
+
+</body>
+</html>
+
